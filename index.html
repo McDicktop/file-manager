@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="./styles.css" />
+        <title>Finder</title>
+    </head>
+
+    <body>
+        <div class="pane_container">
+            <!-- Элемент, который будет перетаскиваться и влиять на pane элементы -->
+            <span class="pane_trigger"></span>
+
+            <aside class="pane_element aside_pane">
+                <!-- Здесь будет структура папок -->
+                <h2 class="pane_title">
+                    Finder
+                    <span
+                        >Structure
+                        <div class="collapse" id="collapse"></div
+                    ></span>
+                </h2>
+                <!-- <div class="collapse" id="collapse"></div> -->
+                <div class="pane_structure"></div>
+            </aside>
+            <main class="pane_element main_pane">
+                <!-- Здесь будут выводиться вложенгные в папку файлы и папки -->
+                <ul class="breadcrumb"></ul>
+                <div class="content_container" id="content_container">
+                    <ul
+                        class="content_container-folder"
+                        id="content_container-folder"
+                    >
+                        <!-- <div class="content_element"></div>
+                        <div class="content_element"></div>
+                        <div class="content_element"></div>
+                        <div class="content_element"></div>
+                        <div class="content_element"></div>
+                        <div class="content_element"></div> -->
+                    </ul>
+                    <ul
+                        class="content_container-file"
+                        id="content_container-file"
+                    >
+                        <!-- <div class="content_element"></div>
+                        <div class="content_element"></div>
+                        <div class="content_element"></div>
+                        <div class="content_element"></div>
+                        <div class="content_element"></div>
+                        <div class="content_element"></div>
+                        <div class="content_element"></div> -->
+                    </ul>
+                </div>
+                <div class="content-control">
+                    <span class="quantity"></span>
+                    <div class="view">
+                        <label for="view_list" class="view_el">
+                            <input
+                                type="radio"
+                                id="view_list"
+                                name="view_radio"
+                            />
+                            <img src="./img/list.png" alt="" />
+                        </label>
+                        <label for="view_grid" class="view_el">
+                            <input
+                                checked
+                                type="radio"
+                                id="view_grid"
+                                name="view_radio"
+                            />
+                            <img src="./img/tabs.png" alt="" />
+                        </label>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <script src="./script.js"></script>
+    </body>
+</html>
