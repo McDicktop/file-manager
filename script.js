@@ -9,7 +9,7 @@ const trigger = document.querySelector(".pane_trigger"),
     quantity = document.querySelector('.quantity');
 
 let isResizing = false,
-    isHover = false,
+    isHover = false, 
     startX,
     initialWidth;
 
