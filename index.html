@@ -9,6 +9,32 @@
 
     <body>
         <div class="pane_container">
+
+
+    <div class="context" >
+        <div class="context_item"> 
+            <div class="inner_item" id="copy">Copy</div> 
+        </div>
+        <div class="context_item"> 
+            <div class="inner_item" id="cut">Cut</div> 
+        </div>
+        <div class="context_item"> 
+            <div class="inner_item" id="paste">Paste</div> 
+        </div>
+        
+        <div class="context_hr"></div>
+    
+        <div class="context_item"> 
+            <div class="inner_item" id="share">Share</div> 
+        </div>
+        <div class="context_item"> 
+            <div class="inner_item" id="delete">Delete</div> 
+        </div>
+    </div>
+
+
+
+
             <!-- Элемент, который будет перетаскиваться и влиять на pane элементы -->
             <span class="pane_trigger"></span>
 
@@ -57,6 +83,7 @@
                     <div class="view">
                         <label for="view_list" class="view_el">
                             <input
+                                id="view_list"
                                 type="radio"
                                 id="view_list"
                                 name="view_radio"
@@ -65,6 +92,7 @@
                         </label>
                         <label for="view_grid" class="view_el">
                             <input
+                                id="view_grid"
                                 checked
                                 type="radio"
                                 id="view_grid"

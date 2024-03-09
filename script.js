@@ -6,10 +6,29 @@ const trigger = document.querySelector(".pane_trigger"),
     breadcrumb = document.querySelector(".breadcrumb"),
     content_container = document.getElementById("content_container"),
     collapse = document.getElementById("collapse"),
-    quantity = document.querySelector('.quantity');
+    quantity = document.querySelector(".quantity"),
+    listView = document.getElementById("view_list"),
+    gridView = document.getElementById("view_grid"),
+    content_container_file = document.getElementById("content_container-file"),
+    context = document.querySelector('.context'),
+    copy = document.getElementById('copy'),
+    cut = document.getElementById('cut'),
+    paste = document.getElementById('paste'),
+    share = document.getElementById('share'),
+    del = document.getElementById('delete');
+
+// convert datetime
+function formatTime12Hours(date) {
+    const hours = date.getHours() % 12 || 12;
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const seconds = String(date.getSeconds()).padStart(2, "0");
+    const meridiem = date.getHours() >= 12 ? "PM" : "AM";
+
+    return `${hours}:${minutes}:${seconds} ${meridiem}`;
+}
 
 let isResizing = false,
-    isHover = false, 
+    isHover = false,
     startX,
     initialWidth;
 
@@ -148,7 +167,6 @@ function attachEvents(breaks) {
             );
 
             attachEvents(breaks);
-
         });
     });
 }
@@ -161,18 +179,20 @@ function selectActiveFolder(nameArray, path) {
             el.classList.add("active");
         }
     });
- 
+
     displayNumberOfFilesInActiveFolder(path);
 }
 
-function displayNumberOfFilesInActiveFolder(pathArg){
+function displayNumberOfFilesInActiveFolder(pathArg) {
     let folderContent = getContent(pathArg.split("/").pop(), structure);
     if (folderContent) {
-        let numberOfFiles = folderContent.filter(el => el.type !== 'dir').length;
+        let numberOfFiles = folderContent.filter(
+            (el) => el.type !== "dir"
+        ).length;
         quantity.innerHTML = `${numberOfFiles} item`;
-        quantity.innerHTML += (numberOfFiles > 1) ? 's' : '';
+        quantity.innerHTML += numberOfFiles > 1 ? "s" : "";
     } else {
-        quantity.innerHTML = '';
+        quantity.innerHTML = "";
     }
 }
 
@@ -294,7 +314,13 @@ function insertContent(content, parent) {
                 </p>
             `;
 
-            el.innerHTML = contentHtml;
+            el.innerHTML =
+                contentHtml +
+                (item.type !== "dir"
+                    ? `<span class="content_element-date">${formatTime12Hours(
+                          new Date()
+                      )}</span>`
+                    : "");
 
             if (item.type === "dir") {
                 el.addEventListener("dblclick", (event) => {
@@ -316,18 +342,25 @@ function insertContent(content, parent) {
                     });
                     attachEvents(breaks);
                 });
-                               
             }
 
             if (item.type === "dir") folder_container.appendChild(el);
-            else file_container.appendChild(el);
+            else {
+                el.addEventListener('contextmenu', (event) => {
+                    event.preventDefault();
+
+                    context.style.top = `${event.pageY}px`;
+                    context.style.left = `${event.pageX}px`;
+                })
+                file_container.appendChild(el);
+            }
         }
 
         if (content.every((el) => el.type !== "dir")) {
             folder_container.style.display = "none";
             parent.style.gap = "0px";
         } else {
-            folder_container.style.display = "flex";
+            folder_container.style.display = "grid";
             parent.style.gap = "20px";
         }
     }
@@ -350,8 +383,6 @@ function getContent(nameArg, obj) {
     return null;
 }
 
-
-
 collapse.addEventListener("click", () => {
     const openFlexContainer = Array.from(
         document.querySelectorAll('ul ul[style*="display: flex"]')
@@ -363,22 +394,69 @@ collapse.addEventListener("click", () => {
     });
 });
 
-
 let timeoutId;
+let timeoutId2;
 
-document.querySelector(".pane_structure").addEventListener('wheel', (e) => {
-
-    if(e.deltaX > 0){
+document.querySelector(".pane_structure").addEventListener("wheel", (e) => {
+    if (e.deltaX > 0) {
         return;
     }
 
-    e.target.closest('.pane_structure').classList.add('scrollable');
+    e.target.closest(".pane_structure").classList.add("scrollable");
 
-    if(timeoutId){
+    if (timeoutId) {
         clearTimeout(timeoutId);
     }
 
     timeoutId = setTimeout(() => {
-        e.target.closest('.pane_structure').classList.remove('scrollable');
+        e.target.closest(".pane_structure").classList.remove("scrollable");
     }, 1500);
+});
+
+document.querySelector(".content_container").addEventListener("wheel", (e) => {
+    if (e.deltaX > 0) {
+        return;
+    }
+
+    e.target.closest(".content_container").classList.add("scrollable");
+
+    if (timeoutId2) {
+        clearTimeout(timeoutId2);
+    }
+
+    timeoutId2 = setTimeout(() => {
+        e.target.closest(".content_container").classList.remove("scrollable");
+    }, 1500);
+});
+
+listView.addEventListener("click", () => {
+    content_container_file.classList.add("changeView");
+});
+gridView.addEventListener("click", () => {
+    content_container_file.classList.remove("changeView");
+});
+
+document.addEventListener('click', (event) => {
+    context.style.left = '-10000px';
+})
+
+document.addEventListener('contextmenu', (event) => {
+    event.preventDefault();
+})
+
+
+copy.addEventListener('click', () => {
+    console.log('copy')
+})
+cut.addEventListener('click', () => {
+    console.log('cut')
+})
+paste.addEventListener('click', () => {
+    console.log('paste')
+})
+share.addEventListener('click', () => {
+    console.log('share')
+})
+del.addEventListener('click', () => {
+    console.log('delete')
 })
