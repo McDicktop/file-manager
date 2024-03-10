@@ -30,7 +30,7 @@ body {
     width: 6px;
     height: 100%;
 
-    display: block;
+    /* display: block; */
     background-color: #4e4e4e;
 
     cursor: ew-resize;
@@ -463,11 +463,7 @@ ul li {
 
 .changeView {
     display: flex;
-    flex-direction: column;
-
-    /* height: calc(100% - 80px); */
-
-    
+    flex-direction: column;    
     flex: 1 1 auto;
 }
 
@@ -677,8 +673,9 @@ ul li {
 .context {
     font-size: 1.1em;
     position: absolute;
-    width: 200px;
-    height: auto;
+    width: 150px;
+    /* height: auto; */
+    height: 168px;
     padding: 5px 0px;
     border-radius: 5px;
     /* top: 10px;*/

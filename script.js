@@ -10,12 +10,18 @@ const trigger = document.querySelector(".pane_trigger"),
     listView = document.getElementById("view_list"),
     gridView = document.getElementById("view_grid"),
     content_container_file = document.getElementById("content_container-file"),
-    context = document.querySelector('.context'),
+    fileContext = document.getElementById('file_context'),
+    folderContext = document.getElementById('folder_context'),
     copy = document.getElementById('copy'),
     cut = document.getElementById('cut'),
     paste = document.getElementById('paste'),
     share = document.getElementById('share'),
-    del = document.getElementById('delete');
+    del = document.getElementById('delete'),
+    windowInnerWidth = window.innerWidth,
+    windowInnerHeight = window.innerHeight;
+
+
+
 
 // convert datetime
 function formatTime12Hours(date) {
@@ -344,13 +350,31 @@ function insertContent(content, parent) {
                 });
             }
 
-            if (item.type === "dir") folder_container.appendChild(el);
+            if (item.type === "dir") {
+                el.addEventListener('contextmenu', (event) => {
+                    let contextX = (event.pageX + 150 > windowInnerWidth) ? event.pageX - 150 : event.pageX,
+                    contextY = (event.pageY + 168 > windowInnerHeight) ? event.pageY - 175 : event.pageY;
+
+                folderContext.style.top = `${contextY}px`;
+                folderContext.style.left = `${contextX}px`;
+
+                fileContext.style.left = '-10000px';
+                
+
+                })
+                folder_container.appendChild(el);
+            }
             else {
                 el.addEventListener('contextmenu', (event) => {
-                    event.preventDefault();
+                    // event.preventDefault();
 
-                    context.style.top = `${event.pageY}px`;
-                    context.style.left = `${event.pageX}px`;
+                    let contextX = (event.pageX + 150 > windowInnerWidth) ? event.pageX - 150 : event.pageX,
+                        contextY = (event.pageY + 168 > windowInnerHeight) ? event.pageY - 175 : event.pageY;
+
+                    fileContext.style.top = `${contextY}px`;
+                    fileContext.style.left = `${contextX}px`;
+
+                    folderContext.style.left = '-10000px';
                 })
                 file_container.appendChild(el);
             }
@@ -436,8 +460,12 @@ gridView.addEventListener("click", () => {
     content_container_file.classList.remove("changeView");
 });
 
-document.addEventListener('click', (event) => {
-    context.style.left = '-10000px';
+
+
+
+document.addEventListener('click', () => {
+    fileContext.style.left = '-10000px';
+    folderContext.style.left = '-10000px';
 })
 
 document.addEventListener('contextmenu', (event) => {
