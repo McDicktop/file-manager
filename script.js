@@ -10,18 +10,17 @@ const trigger = document.querySelector(".pane_trigger"),
     listView = document.getElementById("view_list"),
     gridView = document.getElementById("view_grid"),
     content_container_file = document.getElementById("content_container-file"),
-    fileContext = document.getElementById('file_context'),
-    folderContext = document.getElementById('folder_context'),
-    copy = document.getElementById('copy'),
-    cut = document.getElementById('cut'),
-    paste = document.getElementById('paste'),
-    share = document.getElementById('share'),
-    del = document.getElementById('delete'),
+    fileContext = document.getElementById("file_context"),
+    folderContext = document.getElementById("folder_context"),
+    structureContext = document.getElementById("structure_context"),
+    copy = document.getElementById("copy"),
+    cut = document.getElementById("cut"),
+    paste = document.getElementById("paste"),
+    share = document.getElementById("share"),
+    del = document.getElementById("delete"),
     windowInnerWidth = window.innerWidth,
-    windowInnerHeight = window.innerHeight;
-
-
-
+    windowInnerHeight = window.innerHeight,
+    paneContainer = document.querySelector(".pane_container");
 
 // convert datetime
 function formatTime12Hours(date) {
@@ -213,10 +212,10 @@ function createFolderView(data, parentElement) {
 
     data.children.forEach((child) => {
         const li = document.createElement("li");
+
         ul.appendChild(li);
 
         const folderName = document.createElement("span");
-
         // if (child?.children?.length > 0) {           //    !!!!!!!!!!!!!!
         if (child.type === "dir") {
             const arrowFolder = document.createElement("i");
@@ -239,6 +238,25 @@ function createFolderView(data, parentElement) {
         folderName.dataset.path = child.name;
 
         li.appendChild(folderName);
+
+        // folderName.addEventListener("contextmenu", (event) => {
+        //     // event.preventDefault();
+
+        //     let contextX =
+        //             event.pageX + 150 > windowInnerWidth
+        //                 ? event.pageX - 150
+        //                 : event.pageX,
+        //         contextY =
+        //             event.pageY + 168 > windowInnerHeight
+        //                 ? event.pageY - 175
+        //                 : event.pageY;
+
+        //     structureContext.style.top = `${contextY}px`;
+        //     structureContext.style.left = `${contextX}px`;
+
+        //     folderContext.style.left = "-10000px";
+        //     fileContext.style.left = "-10000px";
+        // });
 
         folderName.addEventListener("dblclick", (event) => {
             if (
@@ -351,31 +369,54 @@ function insertContent(content, parent) {
             }
 
             if (item.type === "dir") {
-                el.addEventListener('contextmenu', (event) => {
-                    let contextX = (event.pageX + 150 > windowInnerWidth) ? event.pageX - 150 : event.pageX,
-                    contextY = (event.pageY + 168 > windowInnerHeight) ? event.pageY - 175 : event.pageY;
+                el.addEventListener("contextmenu", (event) => {
+                    if (document.querySelector('.context')) {
+                        paneContainer.removeChild(document.querySelector('.context'));
+                    }
+                    const contextItems = renderContextMenu({
+                        item1: "New",
+                        item2: "Copy",
+                        item3: "Paste",
+                        item4: "View",
+                    });
+                });
 
-                folderContext.style.top = `${contextY}px`;
-                folderContext.style.left = `${contextX}px`;
+                // el.addEventListener("contextmenu", (event) => {
+                //     let contextX =
+                //             event.pageX + 150 > windowInnerWidth
+                //                 ? event.pageX - 150
+                //                 : event.pageX,
+                //         contextY =
+                //             event.pageY + 168 > windowInnerHeight
+                //                 ? event.pageY - 175
+                //                 : event.pageY;
 
-                fileContext.style.left = '-10000px';
-                
+                //     folderContext.style.top = `${contextY}px`;
+                //     folderContext.style.left = `${contextX}px`;
 
-                })
+                //     fileContext.style.left = "-10000px";
+                //     structureContext.style.left = "-10000px";
+                // });
                 folder_container.appendChild(el);
-            }
-            else {
-                el.addEventListener('contextmenu', (event) => {
-                    // event.preventDefault();
+            } else {
+                // el.addEventListener("contextmenu", (event) => {
+                //     // event.preventDefault();
 
-                    let contextX = (event.pageX + 150 > windowInnerWidth) ? event.pageX - 150 : event.pageX,
-                        contextY = (event.pageY + 168 > windowInnerHeight) ? event.pageY - 175 : event.pageY;
+                //     let contextX =
+                //             event.pageX + 150 > windowInnerWidth
+                //                 ? event.pageX - 150
+                //                 : event.pageX,
+                //         contextY =
+                //             event.pageY + 168 > windowInnerHeight
+                //                 ? event.pageY - 175
+                //                 : event.pageY;
 
-                    fileContext.style.top = `${contextY}px`;
-                    fileContext.style.left = `${contextX}px`;
+                //     fileContext.style.top = `${contextY}px`;
+                //     fileContext.style.left = `${contextX}px`;
 
-                    folderContext.style.left = '-10000px';
-                })
+                //     folderContext.style.left = "-10000px";
+                //     structureContext.style.left = "-10000px";
+                // });
                 file_container.appendChild(el);
             }
         }
@@ -460,31 +501,61 @@ gridView.addEventListener("click", () => {
     content_container_file.classList.remove("changeView");
 });
 
+document.addEventListener("click", () => {
+    if (document.querySelector('.context')) {
+        paneContainer.removeChild(document.querySelector('.context'));
+    }
+    // fileContext.style.left = "-10000px";
+    // folderContext.style.left = "-10000px";
+    // structureContext.style.left = "-10000px";
+});
 
-
-
-document.addEventListener('click', () => {
-    fileContext.style.left = '-10000px';
-    folderContext.style.left = '-10000px';
-})
-
-document.addEventListener('contextmenu', (event) => {
+document.addEventListener("contextmenu", (event) => {
     event.preventDefault();
-})
+});
+//     console.log(event.target);
+//     const contextItems = renderContextMenu({
+//         item1: "New",
+//         item2: "Copy",
+//         item3: "Paste",
+//         item4: "View",
+//     });
 
+//     // console.log(contextItems);
 
-copy.addEventListener('click', () => {
-    console.log('copy')
-})
-cut.addEventListener('click', () => {
-    console.log('cut')
-})
-paste.addEventListener('click', () => {
-    console.log('paste')
-})
-share.addEventListener('click', () => {
-    console.log('share')
-})
-del.addEventListener('click', () => {
-    console.log('delete')
-})
+//     contextItems.forEach(item => item.addEventListener('click', (event) => {
+//         console.log(event.target.id)
+//     }))
+// });
+
+// copy.addEventListener("click", () => {
+//     console.log("copy");
+// });
+// cut.addEventListener("click", () => {
+//     console.log("cut");
+// });
+// paste.addEventListener("click", () => {
+//     console.log("paste");
+// });
+// share.addEventListener("click", () => {
+//     console.log("share");
+// });
+// del.addEventListener("click", () => {
+//     console.log("delete");
+// });
+
+function renderContextMenu(itemsArg) {
+    const contextArr = [];
+    const contextMenuDiv = document.createElement("div");
+    contextMenuDiv.classList.add("context");
+    paneContainer.appendChild(contextMenuDiv);
+    for (let item of Object.values(itemsArg)) {
+        let contextItem = document.createElement("div");
+        contextItem.classList.add("context_item");
+        contextItem.innerHTML = item;
+        contextItem.id = `${item}_context_item_id`.toLowerCase();
+        contextMenuDiv.appendChild(contextItem);
+        contextArr.push(contextItem);
+    }
+    return [contextMenuDiv, contextArr];
+}

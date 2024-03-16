@@ -671,6 +671,7 @@ ul li {
 
 
 .context {
+    z-index: 100;
     font-size: 1.1em;
     position: absolute;
     width: 150px;
@@ -679,7 +680,7 @@ ul li {
     padding: 5px 0px;
     border-radius: 5px;
     /* top: 10px;*/
-    left: 10000px; 
+    /* left: 10000px;  */
     background-color: #fff;
     box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.24);
     color: #333;
